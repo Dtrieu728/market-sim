@@ -2,3 +2,7 @@
 build/
 # Files 
 Overview.md
+*.o
+*.a
+*.so
+*.out

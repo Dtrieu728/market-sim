@@ -9,4 +9,5 @@ include_directories(include)
 add_executable(MarketSim
     src/main.cpp
     src/PriceEngine.cpp
+    src/OrderBook.cpp
 )
