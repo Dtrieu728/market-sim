@@ -6,6 +6,7 @@ public:
     PriceEngine(double startPrice, double volatility);
     void run();
     void stop();
+    void tick();
     double getPrice() const;
     
 

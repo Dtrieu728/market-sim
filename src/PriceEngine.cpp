@@ -36,3 +36,6 @@ double PriceEngine::getPrice() const{
     return price_;
 }
 
+void PriceEngine::tick() {
+    price_ = nextPrice();
+}

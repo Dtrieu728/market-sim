@@ -11,4 +11,5 @@ add_executable(MarketSim
     src/PriceEngine.cpp
     src/OrderBook.cpp
     src/Trader.cpp
+    src/Algorithm.cpp
 )
