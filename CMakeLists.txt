@@ -12,4 +12,5 @@ add_executable(MarketSim
     src/OrderBook.cpp
     src/Trader.cpp
     src/Algorithm.cpp
+    src/Logger.cpp
 )

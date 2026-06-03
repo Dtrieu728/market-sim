@@ -53,3 +53,5 @@ void Algorithm::onPrice(double price){
 void Algorithm::printStats() const {
     std::cout << "\n[ALGO] Total prices observed: " << prices_.size() << "\n";
 }
+
+

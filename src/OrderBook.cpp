@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iomanip>
 
+OrderBook::OrderBook(Logger& logger) : logger_(logger){}
+
 void OrderBook::addOrder(const Order& order){
     if(order.type == OrderType::Buy){
         bids_.push_back(order); 
@@ -38,6 +40,7 @@ void OrderBook::matchOrders() {
                       << filled << " @ $" << fillPrice
                       << " from " << bestAsk.trader << "\n";
 
+            logger_.logTrade(bestBid.trader, bestAsk.trader,fillPrice,filled);
             bestBid.quantity -= filled;
             bestAsk.quantity -= filled;
 

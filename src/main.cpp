@@ -10,8 +10,10 @@
 
 
 int main() {
+    Logger logger("prices.csv","trades.csv");
+
     PriceEngine engine(100.0, 0.5);
-    OrderBook book;
+    OrderBook book(logger);
     Trader algo_trader("AlgoTrader", 10000.0);
 
     // SMA period: 5 ticks, threshold: 0.2% deviation to trigger trade
@@ -25,6 +27,7 @@ int main() {
         double price = engine.getPrice();
         std::cout << std::fixed << std::setprecision(2)
                   << "[PRICE] $" << price << "\n";
+        logger.logPrice(price);
         algo.onPrice(price);
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
