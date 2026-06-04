@@ -8,23 +8,18 @@ using namespace std;
 
 class Algorithm {
 public: 
-    Algorithm(Trader &trader, OrderBook& book, int smaPeriod, double threshold,
-        PriceQueue& queue);
+    Algorithm(Trader &trader, OrderBook& book,PriceQueue& queue);
+    virtual ~Algorithm() = default;
 
     void run();
-    void onPrice(double price);
+    virtual void onPrice(double price) = 0;
     void printStats() const;
 
-private:
+protected:
     Trader& trader_;
     OrderBook& book_;
-
-    int smaPeriod_;
-    double threshold_;
-    vector<double> prices_;
     PriceQueue& queue_;
-
-    double calcSMA() const;
-
+    vector<double> prices_;
+   
 };
 

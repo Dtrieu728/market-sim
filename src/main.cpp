@@ -4,6 +4,7 @@
 #include "Algorithm.hpp"
 #include "Logger.hpp"
 #include "PriceQueue.hpp"
+#include "SMAAlgorithm.hpp"
 #include <iostream>
 #include <thread>
 #include <csignal>
@@ -30,7 +31,7 @@ int main(int argc , char* argv[]) {
 
     OrderBook book(logger);
     Trader algo_trader("AlgoTrader", 10000.0);
-    Algorithm algo(algo_trader, book,5, 0.002,queue);
+    SMAAlgorithm algo(algo_trader, book,queue,5, 0.002);
 
     // launch threads
     thread priceThread([&]() {

@@ -14,4 +14,5 @@ add_executable(MarketSim
     src/Algorithm.cpp
     src/Logger.cpp
     src/PriceQueue.cpp
+    src/SMAAlgorithm.cpp
 )
