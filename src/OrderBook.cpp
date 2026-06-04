@@ -2,19 +2,20 @@
 #include <iostream>
 #include <algorithm>
 #include <iomanip>
+using namespace std;
 
 OrderBook::OrderBook(Logger& logger) : logger_(logger){}
 
 void OrderBook::addOrder(const Order& order){
     if(order.type == OrderType::Buy){
         bids_.push_back(order); 
-        std::sort(bids_.begin(), bids_.end(), [](const Order& a, const Order& b){
+        sort(bids_.begin(), bids_.end(), [](const Order& a, const Order& b){
             return a.price > b.price; // Higher price first
         });
 
     }else{
         asks_.push_back(order);
-        std::sort(asks_.begin(), asks_.end(), [](const Order& a, const Order& b){
+        sort(asks_.begin(), asks_.end(), [](const Order& a, const Order& b){
             return a.price < b.price; // Lower price first
         });
     }
@@ -35,7 +36,7 @@ void OrderBook::matchOrders() {
             int filled = std::min(bestBid.quantity, bestAsk.quantity);
             double fillPrice = bestAsk.price;   // convention: fill at ask price
 
-            std::cout << std::fixed << std::setprecision(2)
+            cout << fixed << setprecision(2)
                       << "[TRADE] " << bestBid.trader << " bought "
                       << filled << " @ $" << fillPrice
                       << " from " << bestAsk.trader << "\n";
@@ -53,16 +54,16 @@ void OrderBook::matchOrders() {
 }
 
 void OrderBook::printBook() const {
-    std::cout << "\n--- Order Book ---\n";
-    std::cout << "ASKS:\n";
+    cout << "\n--- Order Book ---\n";
+    cout << "ASKS:\n";
     for (const auto& o : asks_)
-        std::cout << "  $" << std::fixed << std::setprecision(2)
+        cout << "  $" << fixed << setprecision(2)
                   << o.price << "  qty:" << o.quantity
                   << "  (" << o.trader << ")\n";
-    std::cout << "BIDS:\n";
+    cout << "BIDS:\n";
     for (const auto& o : bids_)
-        std::cout << "  $" << std::fixed << std::setprecision(2)
+        cout << "  $" << fixed << setprecision(2)
                   << o.price << "  qty:" << o.quantity
                   << "  (" << o.trader << ")\n";
-    std::cout << "------------------\n\n";
+    cout << "------------------\n\n";
 }

@@ -2,12 +2,16 @@
 #include <vector>
 #include "OrderBook.hpp"
 #include "Trader.hpp"
+#include "PriceQueue.hpp"
+using namespace std;
 
 
 class Algorithm {
 public: 
-    Algorithm(Trader &trader, OrderBook& book, int smaPeriod, double threshold);
+    Algorithm(Trader &trader, OrderBook& book, int smaPeriod, double threshold,
+        PriceQueue& queue);
 
+    void run();
     void onPrice(double price);
     void printStats() const;
 
@@ -17,7 +21,8 @@ private:
 
     int smaPeriod_;
     double threshold_;
-    std::vector<double> prices_;
+    vector<double> prices_;
+    PriceQueue& queue_;
 
     double calcSMA() const;
 

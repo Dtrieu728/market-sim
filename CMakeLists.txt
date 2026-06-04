@@ -13,4 +13,5 @@ add_executable(MarketSim
     src/Trader.cpp
     src/Algorithm.cpp
     src/Logger.cpp
+    src/PriceQueue.cpp
 )

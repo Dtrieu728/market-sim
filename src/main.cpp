@@ -2,35 +2,48 @@
 #include "OrderBook.hpp"
 #include "Trader.hpp"
 #include "Algorithm.hpp"
-#include<iostream>
-#include<thread>
-#include<chrono>
-#include <iomanip>
+#include "Logger.hpp"
+#include "PriceQueue.hpp"
+#include <iostream>
+#include <thread>
+#include <csignal>
+#include <atomic>
+using namespace std;
 
+atomic<bool> g_running(true);
 
+void signalHandler(int) {
+    cout << "\n[MAIN] Shutting down...\n";
+    g_running = false;
+}
 
-int main() {
-    Logger logger("prices.csv","trades.csv");
+int main(int argc , char* argv[]) {
+    signal(SIGINT, signalHandler);
 
-    PriceEngine engine(100.0, 0.5);
+    Logger logger("prices.csv", "trades.csv");
+    PriceQueue queue;
+
+    PriceEngine engine(100.0, 0.5, queue, logger);
+    if(argc > 1){
+        engine.loadCSV(argv[1]);
+    }
+
     OrderBook book(logger);
     Trader algo_trader("AlgoTrader", 10000.0);
+    Algorithm algo(algo_trader, book,5, 0.002,queue);
 
-    // SMA period: 5 ticks, threshold: 0.2% deviation to trigger trade
-    Algorithm algo(algo_trader, book, 5, 0.002);
+    // launch threads
+    thread priceThread([&]() {
+        engine.run();
+    });
 
-    std::cout << "Starting market simulation...\n\n";
+    thread algoThread([&]() {
+        algo.run();
+    });
 
-    // run price engine manually tick by tick so algo can react
-    for (int i = 0; i < 30; ++i) {
-        engine.tick();                          // generate next price
-        double price = engine.getPrice();
-        std::cout << std::fixed << std::setprecision(2)
-                  << "[PRICE] $" << price << "\n";
-        logger.logPrice(price);
-        algo.onPrice(price);
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    // main thread waits for Ctrl+C
+    priceThread.join();
+    algoThread.join();
 
     algo_trader.printPortfolio(engine.getPrice());
     algo.printStats();
