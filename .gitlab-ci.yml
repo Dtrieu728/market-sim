@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+
+variables:
+  BUILD_DIR: build
+
+build:
+  stage: build
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make
+  script:
+    - cmake -B $BUILD_DIR
+    - cmake --build $BUILD_DIR
+  artifacts:
+    paths:
+      - build/MarketSim
+    expire_in: 1 hour
+
+test:
+  stage: test
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make
+  script:
+    - cmake -B $BUILD_DIR
+    - cmake --build $BUILD_DIR
+    - cd $BUILD_DIR && ctest --output-on-failure
+  dependencies:
+    - build
