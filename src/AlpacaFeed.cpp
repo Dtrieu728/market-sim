@@ -50,8 +50,12 @@ SslContext AlpacaFeed::onTlsInit(websocketpp::connection_hdl) {
 void AlpacaFeed::run() {
     running_ = true;
 
-    // Alpaca paper trading WebSocket endpoint
+
+    // current — US equities (market hours only)
     std::string uri = "wss://stream.data.alpaca.markets/v2/iex";
+
+    // swap to crypto — 24/7, always streaming
+    // std::string uri = "wss://stream.data.alpaca.markets/v2/crypto";
 
     websocketpp::lib::error_code ec;
     auto con = client_.get_connection(uri, ec);

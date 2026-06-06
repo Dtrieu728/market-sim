@@ -6,3 +6,4 @@ Overview.md
 *.a
 *.so
 *.out
+.env

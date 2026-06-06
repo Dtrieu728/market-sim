@@ -25,12 +25,15 @@ int main(int argc , char* argv[]) {
     const char* key    = std::getenv("ALPACA_API_KEY");
     const char* secret = std::getenv("ALPACA_API_SECRET");
 
+    // cout << "KEY: "    << (key    ? key    : "NULL") << "\n";
+    // cout << "SECRET: " << (secret ? secret : "NULL") << "\n";
+
      if (!key || !secret) {
         std::cerr << "[MAIN] Set ALPACA_API_KEY and ALPACA_API_SECRET\n";
         return 1;
     }
 
-    SimConfig cfg = loadConfig("strategy_config.json");
+    SimConfig cfg = loadConfig("../strategy_config.json");
     Logger logger("prices.csv", "trades.csv");
     PriceQueue queue;
     AlpacaFeed feed(key, secret, "AAPL", queue, logger);
